@@ -200,16 +200,16 @@ func _process(delta):
 #			amounts[select] -= 1
 #			collect(16)
 #			collect(16)
-		if block == 7 or block == 8: # pear/coalbush > health
-			amounts[select] -= 1
-			get_parent().get_node("hullmyts").health += 1
+#		if block == 7 or block == 8: # pear/coalbush > health
+#			amounts[select] -= 1
+#			get_parent().get_node("hullmyts").health += 1
 		if block == 2 and amounts[select] >= 5: # paper > thick paper
 			amounts[select] -= 5
 			collect(3)
-#		if block == 3 and inventory.has(4) and amounts[inventory.find(4)] >= 3 and amounts[select] >= 5:
-#			amounts[select] -= 5               # pearman s.
-#			amounts[inventory.find(4)] -= 3
-#			collect(5)
+		if block == 3 and inventory.has(4) and amounts[inventory.find(4)] >= 3 and amounts[select] >= 5:
+			amounts[select] -= 5               # crafter
+			amounts[inventory.find(4)] -= 3
+			collect(5)
 		#if block == 13:# or block == 10 or block == 12 or block == 15:
 			#amounts[select] -= 1
 #			#collect(12)
