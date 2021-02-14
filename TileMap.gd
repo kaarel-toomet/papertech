@@ -45,10 +45,10 @@ var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,
 				19,20,21,22,23,25,26,27,28,29,30,31,34,35]
 var flammable = [5,6,8,16,19,21,32,33,35,36]
 #0:air, 1:water, 2:paper, 3:thick paper, 4:wet paper, 5:crafter, 6:broken paper
-#7:pump, 8:extractor, 9:water buffer, 10:paperball, 11:paperball buffer
+#7:pump, 8:extractor, 9:water buffer, 10:paperball, 11:paperball buffer, 12: ancient paperball
+#13: ancient paperball buffer
 
 
-# 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
 #13:bauxite, 14:lava, 15:lava buffer, 16:wood, 17:gold, 18:monster ruins,
 #19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
 #24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp
@@ -442,6 +442,12 @@ func _physics_process(delta):
 						set_cell(x-1,y,0)
 						set_cell(x,y+1,2)
 						set_cell(x,y-1,0)
+					
+					if ingredients[2] == 4: # thick paper
+						set_cell(x+1,y,0)
+						set_cell(x-1,y,0)
+						set_cell(x,y+1,3)
+						set_cell(x,y-1,0)
 				
 				if get_cell(x,y) == 7: #Pump
 					var j = y-1
@@ -462,9 +468,15 @@ func _physics_process(delta):
 						if get_cell(x,y+1) == 0:
 							if rand_range(0,1) < 0.3:
 								set_cell(x,y+1,10)
-				if get_cell(x,y) == 10 and get_cell(x,y+1) == 0: # Paper ball
+							if rand_range(0,1) < 0.05:
+								set_cell(x,y+1,12)
+					
+				if get_cell(x,y) == 10 and get_cell(x,y+1) in [-1,0]: # Paper ball
 					set_cell(x,y,0)
 					set_cell(x,y+1,11)
+				if get_cell(x,y) == 12 and get_cell(x,y+1) in [-1,0]: # Ancient paper ball
+					set_cell(x,y,0)
+					set_cell(x,y+1,13)
 				if get_cell(x,y) == 1: # Water
 					if get_cell(x+1,y) == 2: # wetten paper
 						set_cell(x+1,y,4)
@@ -576,6 +588,8 @@ func _physics_process(delta):
 					set_cell(x,y,32)
 				if get_cell(x,y) == 11: # Paperball buffer
 					set_cell(x,y,10)
+				if get_cell(x,y) == 13: # Ancient paperball buffer
+					set_cell(x,y,12)
 #				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01 and $light.get_cell(x,y) > 5: # Seed growing
 #					var top = (y-randi()%6)-5
 #					for j in range(top-5,y):
