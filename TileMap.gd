@@ -46,11 +46,12 @@ var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,
 var flammable = [5,6,8,16,19,21,32,33,35,36]
 #0:air, 1:water, 2:paper, 3:thick paper, 4:wet paper, 5:crafter, 6:broken paper
 #7:pump, 8:extractor, 9:water buffer, 10:paperball, 11:paperball buffer, 12: ancient paperball
-#13: ancient paperball buffer
+#13: ancient paperball buffer, 14:lava, 15:lava buffer, 16:ancient document, 17:gold
+#18:monster ruins, 19:magic crystal, 20:reflector, 21:magic spikes, 
+#
 
-
-#13:bauxite, 14:lava, 15:lava buffer, 16:wood, 17:gold, 18:monster ruins,
-#19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
+#
+#22:onion seed, 23:pearman sculpture
 #24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp
 #31:????, 32:oil, 33:oil buffer, 34:bucket, 35:closed door, 36:open door
 #
@@ -448,6 +449,12 @@ func _physics_process(delta):
 						set_cell(x-1,y,0)
 						set_cell(x,y+1,3)
 						set_cell(x,y-1,0)
+						
+					if ingredients[12] == 4: # ancient document
+						set_cell(x+1,y,0)
+						set_cell(x-1,y,0)
+						set_cell(x,y+1,16)
+						set_cell(x,y-1,0)
 				
 				if get_cell(x,y) == 7: #Pump
 					var j = y-1
@@ -468,7 +475,7 @@ func _physics_process(delta):
 						if get_cell(x,y+1) == 0:
 							if rand_range(0,1) < 0.3:
 								set_cell(x,y+1,10)
-							if rand_range(0,1) < 0.05:
+							if rand_range(0,1) < 0.02:
 								set_cell(x,y+1,12)
 					
 				if get_cell(x,y) == 10 and get_cell(x,y+1) in [-1,0]: # Paper ball
@@ -477,8 +484,47 @@ func _physics_process(delta):
 				if get_cell(x,y) == 12 and get_cell(x,y+1) in [-1,0]: # Ancient paper ball
 					set_cell(x,y,0)
 					set_cell(x,y+1,13)
+					
+				if get_cell(x,y) == 16: # Ancient document
+					for i in range(len(ingredients)): ingredients[i] = 0
+					ingredients[get_cell(x+1,y)] += 1
+					ingredients[get_cell(x-1,y)] += 1
+					ingredients[get_cell(x,y+1)] += 1
+					ingredients[get_cell(x,y-1)] += 1
+					
+					if ingredients[12] == 4: # magic crystal
+						set_cell(x+1,y,0)
+						set_cell(x-1,y,0)
+						set_cell(x,y+1,0)
+						set_cell(x,y-1,19)
+					if ingredients[19] == 1 and ingredients[7] == 2 and ingredients[12] == 1: # reflector
+						set_cell(x+1,y,0)
+						set_cell(x-1,y,0)
+						set_cell(x,y+1,0)
+						set_cell(x,y-1,20)
+					if ingredients[19] == 1 and ingredients[3] == 2 and ingredients[5] == 1: # magic spikes
+						set_cell(x+1,y,0)
+						set_cell(x-1,y,0)
+						set_cell(x,y+1,0)
+						set_cell(x,y-1,21)
+						
+				if get_cell(x,y) == 20:  # Reflector
+					var d = get_cell(x,y+1)
+					var l = get_cell(x-1,y)
+					var u = get_cell(x,y-1)
+					var r = get_cell(x+1,y)
+					set_cell(x,y+1,d)
+					set_cell(x+1,y,l)
+					set_cell(x,y-1,u)
+					set_cell(x-1,y,r)
+					
+				if get_cell(x,y) == 21:  # Magic Spikes
+					if get_cell(x,y-1) in [10,12]:
+						get_parent().get_node("hud").collect(get_cell(x,y-1))
+				
+					
 				if get_cell(x,y) == 1: # Water
-					if get_cell(x+1,y) == 2: # wetten paper
+					if get_cell(x+1,y) == 2: # wet paper
 						set_cell(x+1,y,4)
 					if get_cell(x-1,y) == 2:
 						set_cell(x-1,y,4)
