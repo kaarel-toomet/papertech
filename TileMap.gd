@@ -45,7 +45,7 @@ var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,
 				19,20,21,22,23,25,26,27,28,29,30,31,34,35]
 var flammable = [5,6,8,16,19,21,32,33,35,36]
 #0:air, 1:water, 2:paper, 3:thick paper, 4:wet paper, 5:crafter, 6:broken paper
-#7:pump, 8:furnace,
+#7:pump, 8:extractor, 9:water buffer, 10:paperball, 11:paperball buffer
 
 
 # 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
@@ -392,7 +392,7 @@ func _physics_process(delta):
 	var result = space_state.intersect_ray(hxy+Vector2(16,16), mxy*32-(mxy*32-hxy).normalized()*30, [parent.get_node("hullmyts")])
 	#if Input.is_action_just_pressed("LCLICK") and (not result):
 		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
-	if Input.is_action_just_pressed("RCLICK") and (not result):
+	if Input.is_action_just_pressed("RCLICK"):# and (not result):
 		ehitus(mxy)
 	if Input.is_action_just_pressed("LCLICK"):
 		if get_cell(floor(mxy.x),floor(mxy.y)) in [1,14,32] and hud.inventory[hud.select] == 34:
@@ -404,8 +404,8 @@ func _physics_process(delta):
 	
 	if timer >= 0.5: ## Update blocks
 		timer = 0
-		for x in range(wOffsetx*chunkW,wOffsetx*chunkW+chunkW*3):
-			for y in range(wOffsety*chunkH,wOffsety*chunkH+chunkH*3):
+		for x in range(wOffsetx*chunkW - chunkW*2,wOffsetx*chunkW+chunkW*5):
+			for y in range(wOffsety*chunkH - chunkH*2,wOffsety*chunkH+chunkH*5):
 				#$light.update_tile(x,y)
 				if get_cell(x,y) == 5: #Crafter
 					for i in range(len(ingredients)): ingredients[i] = 0
@@ -430,6 +430,18 @@ func _physics_process(delta):
 						set_cell(x-1,y,0)
 						set_cell(x,y+1,7)
 						set_cell(x,y-1,7)
+					
+					if ingredients[7] == 1 and ingredients[4] == 3: # extractor
+						set_cell(x+1,y,0)
+						set_cell(x-1,y,0)
+						set_cell(x,y+1,0)
+						set_cell(x,y-1,8)
+						
+					if ingredients[10] == 2 and ingredients[0] == 2: # paper
+						set_cell(x+1,y,0)
+						set_cell(x-1,y,0)
+						set_cell(x,y+1,2)
+						set_cell(x,y-1,0)
 				
 				if get_cell(x,y) == 7: #Pump
 					var j = y-1
@@ -443,7 +455,16 @@ func _physics_process(delta):
 								break
 							else:
 								break
-				
+								
+				if get_cell(x,y) == 8: # Extractor
+					if get_cell(x,y-1) == 1 and get_cell(x,y+1) in [0,3]:
+						set_cell(x,y-1,0)
+						if get_cell(x,y+1) == 0:
+							if rand_range(0,1) < 0.3:
+								set_cell(x,y+1,10)
+				if get_cell(x,y) == 10 and get_cell(x,y+1) == 0: # Paper ball
+					set_cell(x,y,0)
+					set_cell(x,y+1,11)
 				if get_cell(x,y) == 1: # Water
 					if get_cell(x+1,y) == 2: # wetten paper
 						set_cell(x+1,y,4)
@@ -553,6 +574,8 @@ func _physics_process(delta):
 					set_cell(x,y,14)
 				if get_cell(x,y) == 33: # Oil buffer
 					set_cell(x,y,32)
+				if get_cell(x,y) == 11: # Paperball buffer
+					set_cell(x,y,10)
 				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01 and $light.get_cell(x,y) > 5: # Seed growing
 					var top = (y-randi()%6)-5
 					for j in range(top-5,y):
