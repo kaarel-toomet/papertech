@@ -576,14 +576,14 @@ func _physics_process(delta):
 					set_cell(x,y,32)
 				if get_cell(x,y) == 11: # Paperball buffer
 					set_cell(x,y,10)
-				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01 and $light.get_cell(x,y) > 5: # Seed growing
-					var top = (y-randi()%6)-5
-					for j in range(top-5,y):
-						for i in range(x-5,x+5):
-							var dist = Vector2(abs(x-i),abs(j-(top)))
-							if dist[0]+dist[1] < 3+rand_range(-0.5,1.5) and j < top+1:
-								set_cell(i,j,6)
-						if j >= top: set_cell(x,j,5)
+#				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01 and $light.get_cell(x,y) > 5: # Seed growing
+#					var top = (y-randi()%6)-5
+#					for j in range(top-5,y):
+#						for i in range(x-5,x+5):
+#							var dist = Vector2(abs(x-i),abs(j-(top)))
+#							if dist[0]+dist[1] < 3+rand_range(-0.5,1.5) and j < top+1:
+#								set_cell(i,j,6)
+#						if j >= top: set_cell(x,j,5)
 				if get_cell(x,y) == 22 and (get_cell(x,y+1) == 6 or get_cell(x,y+1) == 5) and rand_range(0,1) < 0.01 and $light.get_cell(x,y) > 5: # Onion seed growing
 					set_cell(x,y,21)
 					set_cell(x,y-1,21)
