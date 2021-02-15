@@ -41,18 +41,16 @@ var breakto = {-1:-1, 0:0, 1:0, 2:0, 3:0, 4:0, 5:0,
 	14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0,
 	22:0, 23:0, 24:0, 25:0, 26:0, 27:0, 28:0, 29:0,
 	30:0, 31:0, 32:0, 33:0, 34:0, 35:0, 36:0}
-var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,
+var solid = [2,3,4,5,6,7,8,10,12,16,17,18,
 				19,20,21,22,23,25,26,27,28,29,30,31,34,35]
 var flammable = [5,6,8,16,19,21,32,33,35,36]
 #0:air, 1:water, 2:paper, 3:thick paper, 4:wet paper, 5:crafter, 6:broken paper
 #7:pump, 8:extractor, 9:water buffer, 10:paperball, 11:paperball buffer, 12: ancient paperball
 #13: ancient paperball buffer, 14:lava, 15:lava buffer, 16:ancient document, 17:gold
-#18:monster ruins, 19:magic crystal, 20:reflector, 21:magic spikes, 
-#
+#18:monster ruins, 19:magic crystal, 20:up pipe, 21:right pipe, 22:down pipe, 23:left pipe
+#24:fire, 25:magic spikes, 
 
-#
-#22:onion seed, 23:pearman sculpture
-#24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp
+#25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp
 #31:????, 32:oil, 33:oil buffer, 34:bucket, 35:closed door, 36:open door
 #
 
@@ -406,7 +404,7 @@ func _physics_process(delta):
 	if timer >= 0.5: ## Update blocks
 		timer = 0
 		for x in range(wOffsetx*chunkW - chunkW*2,wOffsetx*chunkW+chunkW*5):
-			for y in range(wOffsety*chunkH - chunkH*2,wOffsety*chunkH+chunkH*5):
+			for y in range(wOffsety*chunkH - chunkH*3,wOffsety*chunkH+chunkH*6):
 				#$light.update_tile(x,y)
 				if get_cell(x,y) == 5: #Crafter
 					for i in range(len(ingredients)): ingredients[i] = 0
@@ -481,8 +479,8 @@ func _physics_process(delta):
 				if get_cell(x,y) == 10 and get_cell(x,y+1) in [-1,0]: # Paper ball
 					set_cell(x,y,0)
 					set_cell(x,y+1,11)
-				if get_cell(x,y) == 12 and get_cell(x,y+1) in [-1,0]: # Ancient paper ball
-					set_cell(x,y,0)
+				if get_cell(x,y) == 12 and get_cell(x,y+1) in [-1,0,1]: # Ancient paper ball
+					set_cell(x,y,get_cell(x,y+1))
 					set_cell(x,y+1,13)
 					
 				if get_cell(x,y) == 16: # Ancient document
@@ -497,30 +495,69 @@ func _physics_process(delta):
 						set_cell(x-1,y,0)
 						set_cell(x,y+1,0)
 						set_cell(x,y-1,19)
-					if ingredients[19] == 1 and ingredients[7] == 2 and ingredients[12] == 1: # reflector
+					if ingredients[19] == 1 and ingredients[7] == 2 and ingredients[12] == 1: # up pipe
 						set_cell(x+1,y,0)
 						set_cell(x-1,y,0)
 						set_cell(x,y+1,0)
 						set_cell(x,y-1,20)
-					if ingredients[19] == 1 and ingredients[3] == 2 and ingredients[5] == 1: # magic spikes
+					if ingredients[19] == 1 and ingredients[3] == 2 and ingredients[6] == 1: # magic spikes
 						set_cell(x+1,y,0)
 						set_cell(x-1,y,0)
 						set_cell(x,y+1,0)
-						set_cell(x,y-1,21)
+						set_cell(x,y-1,25)
 						
-				if get_cell(x,y) == 20:  # Reflector
-					var d = get_cell(x,y+1)
-					var l = get_cell(x-1,y)
-					var u = get_cell(x,y-1)
-					var r = get_cell(x+1,y)
-					set_cell(x,y+1,d)
-					set_cell(x+1,y,l)
-					set_cell(x,y-1,u)
-					set_cell(x-1,y,r)
+				if get_cell(x,y) == 20:  # up pipe
+					var j = y-1
+					while true:
+						if get_cell(x,j) == 20:
+							j -= 1
+						elif get_cell(x,j) == 0:
+							set_cell(x,j,get_cell(x,y+1))
+							set_cell(x,y+1,0)
+							break
+						else:
+							break
+				if get_cell(x,y) == 21:  # left pipe
+					var i = x+1
+					while true:
+						if get_cell(i,y) == 21:
+							i += 1
+						elif get_cell(i,y) == 0:
+							set_cell(i,y,get_cell(x-1,y))
+							set_cell(x-1,y,0)
+							break
+						else:
+							break
+				if get_cell(x,y) == 22:  # down pipe
+					var j = y+1
+					while true:
+						if get_cell(x,j) == 22:
+							j += 1
+						elif get_cell(x,j) == 0:
+							set_cell(x,j,get_cell(x,y-1))
+							set_cell(x,y-1,0)
+							break
+						else:
+							break
+				if get_cell(x,y) == 23:  # right pipe
+					var i = x-1
+					while true:
+						if get_cell(i,y) == 23:
+							i -= 1
+						elif get_cell(i,y) == 0:
+							set_cell(i,y,get_cell(x+1,y))
+							set_cell(x+1,y,0)
+							break
+						else:
+							break
 					
-				if get_cell(x,y) == 21:  # Magic Spikes
+				if get_cell(x,y) == 25:  # Magic Spikes
+					if get_cell(x,y-1) in [11,13]:
+						get_parent().get_node("hud").collect(get_cell(x,y-1)-1)
+						set_cell(x,y-1,0)
 					if get_cell(x,y-1) in [10,12]:
 						get_parent().get_node("hud").collect(get_cell(x,y-1))
+						set_cell(x,y-1,0)
 				
 					
 				if get_cell(x,y) == 1: # Water
@@ -665,7 +702,7 @@ func _physics_process(delta):
 									set_cell(i,j,27)
 								if get_cell(i,j) == 13 and rand_range(0,1) < 0.02:
 									set_cell(i,j,12)
-				$light.update_tile(x,y)
+				#$light.update_tile(x,y)
 
 #func tarbreak(x,y):
 #	if !solid.has(get_cell(x,y)): return

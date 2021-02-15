@@ -213,6 +213,18 @@ func _process(delta):
 			amounts[select] -= 5               # crafter
 			amounts[inventory.find(4)] -= 3
 			collect(5)
+		if block == 20: # up pipe > right pipe
+			amounts[select] -= 1
+			collect(21)
+		if block == 21: # right pipe > down pipe
+			amounts[select] -= 1
+			collect(22)
+		if block == 22: # down pipe > left pipe
+			amounts[select] -= 1
+			collect(23)
+		if block == 23: # left pipe > up pipe
+			amounts[select] -= 1
+			collect(20)
 		#if block == 13:# or block == 10 or block == 12 or block == 15:
 			#amounts[select] -= 1
 #			#collect(12)
@@ -241,14 +253,14 @@ func _process(delta):
 #		if block == 19: # box > door
 #			amounts[select] -= 1
 #			collect(35)
-	if Input.is_action_just_pressed("yeet") and inventory[select] == 21:
-		amounts[select] -= 1
-		var mxy = get_parent().get_global_mouse_position()#/32
-		var pew = onion.instance()
-		get_parent().get_node("sibulad").add_child(pew)
-		pew.position = get_parent().get_node("hullmyts").position
-		pew.vel = (mxy-get_parent().get_node("hullmyts").position).normalized() * 12
-		pew.scale = Vector2(2,2)
+#	if Input.is_action_just_pressed("yeet") and inventory[select] == 21:
+#		amounts[select] -= 1
+#		var mxy = get_parent().get_global_mouse_position()#/32
+#		var pew = onion.instance()
+#		get_parent().get_node("sibulad").add_child(pew)
+#		pew.position = get_parent().get_node("hullmyts").position
+#		pew.vel = (mxy-get_parent().get_node("hullmyts").position).normalized() * 12
+#		pew.scale = Vector2(2,2)
 		
 		
 	if kuld >= 10 and (empty < 20 or inventory.has(17)):
