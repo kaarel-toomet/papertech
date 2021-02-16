@@ -9,7 +9,7 @@ var speed = basespeed
 var pause = false
 export (PackedScene) var kuld
 
-export var spawnpoint = Vector2(0,-256)
+export var spawnpoint = Vector2(0,0)
 
 var breaking = true
 
@@ -23,7 +23,7 @@ var breaktxts = [break0,break1,break2,break3,break4,break0]
 var breakprg = 0
 var breakpos = Vector2(0,0)
 var breakspd = 5
-var breakspds = [1,1,5,5,3,7,5,7,7,0,1,0,5,0,1,
+var breakspds = [1,1,5,8,3,7,5,7,7,0,1,0,5,0,1,
 				0,7,12,12,3,5,5,5,5,1,7,10,10,
 				1,1,100,200,1,1,1,10,1]
 
