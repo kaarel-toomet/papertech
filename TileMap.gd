@@ -405,7 +405,7 @@ func _physics_process(delta):
 		timer = 0
 		for x in range(wOffsetx*chunkW - chunkW*2,wOffsetx*chunkW+chunkW*5):
 			for y in range(wOffsety*chunkH - chunkH*3,wOffsety*chunkH+chunkH*6):
-				#$light.update_tile(x,y)
+				$light.update_tile(x,y)
 				if get_cell(x,y) == 5: #Crafter
 					for i in range(len(ingredients)): ingredients[i] = 0
 					ingredients[get_cell(x+1,y)] += 1
@@ -416,8 +416,9 @@ func _physics_process(delta):
 					if ingredients[3] == 4: # extract water
 						set_cell(x+1,y,6)
 						set_cell(x-1,y,6)
-						set_cell(x,y+1,6)
-						set_cell(x,y-1,1)
+						set_cell(x,y+1,1)
+						set_cell(x,y-1,6)
+						
 					if ingredients[4] == 3 and ingredients[0] == 1: # extract water
 						set_cell(x+1,y,2)
 						set_cell(x-1,y,2)
@@ -433,8 +434,8 @@ func _physics_process(delta):
 					if ingredients[7] == 1 and ingredients[4] == 3: # extractor
 						set_cell(x+1,y,0)
 						set_cell(x-1,y,0)
-						set_cell(x,y+1,0)
-						set_cell(x,y-1,8)
+						set_cell(x,y+1,8)
+						set_cell(x,y-1,0)
 						
 					if ingredients[10] == 2 and ingredients[0] == 2: # paper
 						set_cell(x+1,y,0)
@@ -493,27 +494,28 @@ func _physics_process(delta):
 					if ingredients[12] == 4: # magic crystal
 						set_cell(x+1,y,0)
 						set_cell(x-1,y,0)
-						set_cell(x,y+1,0)
-						set_cell(x,y-1,19)
+						set_cell(x,y+1,19)
+						set_cell(x,y-1,0)
 					if ingredients[19] == 1 and ingredients[7] == 2 and ingredients[12] == 1: # up pipe
 						set_cell(x+1,y,0)
 						set_cell(x-1,y,0)
-						set_cell(x,y+1,0)
-						set_cell(x,y-1,20)
+						set_cell(x,y+1,20)
+						set_cell(x,y-1,0)
 					if ingredients[19] == 1 and ingredients[3] == 2 and ingredients[6] == 1: # magic spikes
 						set_cell(x+1,y,0)
 						set_cell(x-1,y,0)
-						set_cell(x,y+1,0)
-						set_cell(x,y-1,25)
+						set_cell(x,y+1,25)
+						set_cell(x,y-1,0)
 						
 				if get_cell(x,y) == 20:  # up pipe
 					var j = y-1
 					while true:
 						if get_cell(x,j) == 20:
 							j -= 1
-						elif get_cell(x,j) == 0:
+						elif get_cell(x,j) in [0,1]:
+							var o = get_cell(x,j)
 							set_cell(x,j,get_cell(x,y+1))
-							set_cell(x,y+1,0)
+							set_cell(x,y+1,o)
 							break
 						else:
 							break
@@ -522,9 +524,10 @@ func _physics_process(delta):
 					while true:
 						if get_cell(i,y) == 21:
 							i += 1
-						elif get_cell(i,y) == 0:
+						elif get_cell(i,y) in [0,1]:
+							var o = get_cell(i,y)
 							set_cell(i,y,get_cell(x-1,y))
-							set_cell(x-1,y,0)
+							set_cell(x-1,y,o)
 							break
 						else:
 							break
@@ -533,9 +536,10 @@ func _physics_process(delta):
 					while true:
 						if get_cell(x,j) == 22:
 							j += 1
-						elif get_cell(x,j) == 0:
+						elif get_cell(x,j) in [0,1]:
+							var o = get_cell(x,j)
 							set_cell(x,j,get_cell(x,y-1))
-							set_cell(x,y-1,0)
+							set_cell(x,y-1,o)
 							break
 						else:
 							break
@@ -544,9 +548,10 @@ func _physics_process(delta):
 					while true:
 						if get_cell(i,y) == 23:
 							i -= 1
-						elif get_cell(i,y) == 0:
+						elif get_cell(i,y) in [0,1]:
+							var o = get_cell(i,y)
 							set_cell(i,y,get_cell(x+1,y))
-							set_cell(x+1,y,0)
+							set_cell(x+1,y,o)
 							break
 						else:
 							break

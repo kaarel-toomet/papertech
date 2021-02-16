@@ -95,6 +95,9 @@ func _process(delta):
 			breakprg = 0
 			break
 			
+		if breakpos != pos*32:
+			breakpos = pos*32
+			breakprg = 0
 		
 		if c.normal.x == -1 and right and breaking:
 			breakprg += 60*delta
@@ -107,7 +110,7 @@ func _process(delta):
 			
 		elif c.normal.y == 1 and up and breaking:
 			breakprg += 60*delta
-		breakpos = pos*32
+		
 		breakspd = breakspds[tilemap.get_cellv(pos)]
 		if get_parent().get_node("hud").inventory[min(get_parent().get_node("hud").select,20)] == 28:
 			breakspd = breakspd * 0.1
