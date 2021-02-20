@@ -506,7 +506,7 @@ func _physics_process(delta):
 						set_cell(x-1,y,0)
 						set_cell(x,y+1,25)
 						set_cell(x,y-1,0)
-					if ingredients[19] == 1 and ingredients[3] == 2 and ingredients[7] == 1: # detector
+					if ingredients[19] == 1 and ingredients[3] == 2 and ingredients[20] == 1: # detector
 						set_cell(x+1,y,0)
 						set_cell(x-1,y,0)
 						set_cell(x,y+1,26)
@@ -620,9 +620,9 @@ func _physics_process(delta):
 						else:
 							break
 				if get_cell(x,y) == 26: # Detector
-					if get_cell(x,y+1) in [get_cell(x-1,y),get_cell(x+1,y)] and get_cell(x,y-1) == 0:
-						set_cell(x,y-1,get_cell(x,y+1))
-						set_cell(x,y+1,0)
+					if get_cell(x,y-1) in [get_cell(x-1,y),get_cell(x+1,y)] and get_cell(x,y+1) == 0:
+						set_cell(x,y+1,get_cell(x,y-1))
+						set_cell(x,y-1,0)
 					
 				if get_cell(x,y) == 25:  # Magic Spikes
 					if get_cell(x,y-1) in [11,13]:
