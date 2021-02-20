@@ -209,6 +209,17 @@ func _process(delta):
 		if block == 10 and amounts[select] >= 3: # paper ball > paper
 			amounts[select] -= 3
 			collect(2)
+		if block == 10 and amounts[select] >= 27 and Input.is_action_pressed("LSHIFT"): # paper ball > paper
+			amounts[select] -= 27
+			collect(2)
+			collect(2)
+			collect(2)
+			collect(2)
+			collect(2)
+			collect(2)
+			collect(2)
+			collect(2)
+			collect(2)
 		if block == 3 and inventory.has(4) and amounts[inventory.find(4)] >= 3 and amounts[select] >= 5:
 			amounts[select] -= 5               # crafter
 			amounts[inventory.find(4)] -= 3

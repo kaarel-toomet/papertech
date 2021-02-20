@@ -48,9 +48,9 @@ var flammable = [5,6,8,16,19,21,32,33,35,36]
 #7:pump, 8:extractor, 9:water buffer, 10:paperball, 11:paperball buffer, 12: ancient paperball
 #13: ancient paperball buffer, 14:lava, 15:lava buffer, 16:ancient document, 17:gold
 #18:monster ruins, 19:magic crystal, 20:up pipe, 21:right pipe, 22:down pipe, 23:left pipe
-#24:fire, 25:magic spikes, 
+#24:fire, 25:magic spikes, 26:detector,
 
-#25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp
+#27:glass, 28:pickaxe, 29:sword, 30:lamp
 #31:????, 32:oil, 33:oil buffer, 34:bucket, 35:closed door, 36:open door
 #
 
@@ -473,9 +473,9 @@ func _physics_process(delta):
 						set_cell(x,y-1,0)
 						if get_cell(x,y+1) == 0:
 							if rand_range(0,1) < 0.3:
-								set_cell(x,y+1,10)
+								set_cell(x,y+1,11)
 							if rand_range(0,1) < 0.02:
-								set_cell(x,y+1,12)
+								set_cell(x,y+1,13)
 					
 				if get_cell(x,y) == 10 and get_cell(x,y+1) in [-1,0]: # Paper ball
 					set_cell(x,y,0)
@@ -506,55 +506,123 @@ func _physics_process(delta):
 						set_cell(x-1,y,0)
 						set_cell(x,y+1,25)
 						set_cell(x,y-1,0)
+					if ingredients[19] == 1 and ingredients[3] == 2 and ingredients[7] == 1: # detector
+						set_cell(x+1,y,0)
+						set_cell(x-1,y,0)
+						set_cell(x,y+1,26)
+						set_cell(x,y-1,0)
 						
 				if get_cell(x,y) == 20:  # up pipe
-					var j = y-1
+					var i = x
+					var j = y
+					var p = 20
 					while true:
-						if get_cell(x,j) == 20:
+						if get_cell(i,j) == 20 and p != 22:
 							j -= 1
-						elif get_cell(x,j) in [0,1]:
-							var o = get_cell(x,j)
-							set_cell(x,j,get_cell(x,y+1))
+							p = 20
+						elif get_cell(i,j) == 21 and p != 23:
+							i += 1
+							p = 21
+						elif get_cell(i,j) == 22 and p != 20:
+							j += 1
+							p = 22
+						elif get_cell(i,j) == 23 and p != 21:
+							i -= 1
+							p = 23
+						elif get_cell(i,j) in [0,1]:
+							var o = get_cell(i,j)
+							set_cell(i,j,get_cell(x,y+1))
 							set_cell(x,y+1,o)
 							break
 						else:
 							break
-				if get_cell(x,y) == 21:  # left pipe
-					var i = x+1
+#					var j = y-1
+#					while true:
+#						if get_cell(x,j) == 20:
+#							j -= 1
+#						elif get_cell(x,j) in [0,1]:
+#							var o = get_cell(x,j)
+#							set_cell(x,j,get_cell(x,y+1))
+#							set_cell(x,y+1,o)
+#							break
+#						else:
+#							break
+				if get_cell(x,y) == 21:  # right pipe
+					var i = x
+					var j = y
+					var p = 21
 					while true:
-						if get_cell(i,y) == 21:
+						if get_cell(i,j) == 20 and p != 22:
+							j -= 1
+							p = 20
+						elif get_cell(i,j) == 21 and p != 23:
 							i += 1
-						elif get_cell(i,y) in [0,1]:
-							var o = get_cell(i,y)
-							set_cell(i,y,get_cell(x-1,y))
+							p = 21
+						elif get_cell(i,j) == 22 and p != 20:
+							j += 1
+							p = 22
+						elif get_cell(i,j) == 23 and p != 21:
+							i -= 1
+							p = 23
+						elif get_cell(i,j) in [0,1]:
+							var o = get_cell(i,j)
+							set_cell(i,j,get_cell(x-1,y))
 							set_cell(x-1,y,o)
 							break
 						else:
 							break
 				if get_cell(x,y) == 22:  # down pipe
-					var j = y+1
+					var i = x
+					var j = y
+					var p = 22
 					while true:
-						if get_cell(x,j) == 22:
+						if get_cell(i,j) == 20 and p != 22:
+							j -= 1
+							p = 20
+						elif get_cell(i,j) == 21 and p != 23:
+							i += 1
+							p = 21
+						elif get_cell(i,j) == 22 and p != 20:
 							j += 1
-						elif get_cell(x,j) in [0,1]:
-							var o = get_cell(x,j)
-							set_cell(x,j,get_cell(x,y-1))
+							p = 22
+						elif get_cell(i,j) == 23 and p != 21:
+							i -= 1
+							p = 23
+						elif get_cell(i,j) in [0,1]:
+							var o = get_cell(i,j)
+							set_cell(i,j,get_cell(x,y-1))
 							set_cell(x,y-1,o)
 							break
 						else:
 							break
-				if get_cell(x,y) == 23:  # right pipe
-					var i = x-1
+				if get_cell(x,y) == 23:  # left pipe
+					var i = x
+					var j = y
+					var p = 23
 					while true:
-						if get_cell(i,y) == 23:
+						if get_cell(i,j) == 20 and p != 22:
+							j -= 1
+							p = 20
+						elif get_cell(i,j) == 21 and p != 23:
+							i += 1
+							p = 21
+						elif get_cell(i,j) == 22 and p != 20:
+							j += 1
+							p = 22
+						elif get_cell(i,j) == 23 and p != 21:
 							i -= 1
-						elif get_cell(i,y) in [0,1]:
-							var o = get_cell(i,y)
-							set_cell(i,y,get_cell(x+1,y))
+							p = 23
+						elif get_cell(i,j) in [0,1]:
+							var o = get_cell(i,j)
+							set_cell(i,j,get_cell(x+1,y))
 							set_cell(x+1,y,o)
 							break
 						else:
 							break
+				if get_cell(x,y) == 26: # Detector
+					if get_cell(x,y+1) in [get_cell(x-1,y),get_cell(x+1,y)] and get_cell(x,y-1) == 0:
+						set_cell(x,y-1,get_cell(x,y+1))
+						set_cell(x,y+1,0)
 					
 				if get_cell(x,y) == 25:  # Magic Spikes
 					if get_cell(x,y-1) in [11,13]:
