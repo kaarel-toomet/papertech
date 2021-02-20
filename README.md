@@ -43,7 +43,7 @@ Made from a fork of tunnelivana. Has some factory game elements.
 - 4 ancient paper balls → 1 magic crystal
 - 1 magic crystal + 2 thick paper + 1 broken paper → 1 magic spike
 - 1 magic crystal + 2 pumps + 1 ancient paper ball → 1 pipe
-- 1 magic crystal + 1 pump + 2 thick paper → 1 detector 
+- 1 magic crystal + 1 pipe + 2 thick paper → 1 detector 
 
 
 
