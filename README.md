@@ -27,6 +27,8 @@ Made from a fork of tunnelivana. Has some factory game elements.
 - 5 thick paper + 3 wet paper → 1 crafting machine
 - 3 paper balls/crumpled paper → 1 paper (When holding shift, this is done 10 times)
 - 1 pipe → 1 pipe in a different direction
+- 1 detector → 1 upside-down detector
+- 1 upside-down detector → 1 detector
 
 ### Crafter (place ingredients around it (not diagonally) in any order)
 
@@ -43,7 +45,7 @@ Made from a fork of tunnelivana. Has some factory game elements.
 - 4 ancient paper balls → 1 magic crystal
 - 1 magic crystal + 2 thick paper + 1 broken paper → 1 magic spike
 - 1 magic crystal + 2 pumps + 1 ancient paper ball → 1 pipe
-- 1 magic crystal + 1 pipe + 2 thick paper → 1 detector 
+- 1 magic crystal + 1 pipe + 2 up pipe → 1 detector 
 
 
 
@@ -70,4 +72,4 @@ If there is a block of water above, it destroys it and has a chance to spawn a p
 Move all blocks in any direction. They can be chained like pumps (one pipe sends an object through multiple, e.g. `#→↓` sends the # to below the down facing pipe), when facing in different dorections. When they are arranged like `←←`, they create a weird moving object.
 
 ###Detector
-Works like a down facing pipe that cannot be chained. It only sends objects through that also appear in one of its sides, e.g. `#A@` sends # and @ through.
+Works like an up/down facing pipe that cannot be chained. It only sends objects through that also appear in one of its sides, e.g. `#A@` sends # and @ through. Comes in up-facing and down-facing variants.

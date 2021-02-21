@@ -48,9 +48,9 @@ var flammable = [5,6,8,16,19,21,32,33,35,36]
 #7:pump, 8:extractor, 9:water buffer, 10:paperball, 11:paperball buffer, 12: ancient paperball
 #13: ancient paperball buffer, 14:lava, 15:lava buffer, 16:ancient document, 17:gold
 #18:monster ruins, 19:magic crystal, 20:up pipe, 21:right pipe, 22:down pipe, 23:left pipe
-#24:fire, 25:magic spikes, 26:detector,
+#24:fire, 25:magic spikes, 26:detector, 27:down detector, 
 
-#27:glass, 28:pickaxe, 29:sword, 30:lamp
+#28:pickaxe, 29:sword, 30:lamp
 #31:????, 32:oil, 33:oil buffer, 34:bucket, 35:closed door, 36:open door
 #
 
@@ -516,7 +516,10 @@ func _physics_process(delta):
 					var i = x
 					var j = y
 					var p = 20
+					var n = 0
 					while true:
+						n += 1
+						if n > 100: return
 						if get_cell(i,j) == 20 and p != 22:
 							j -= 1
 							p = 20
@@ -551,7 +554,10 @@ func _physics_process(delta):
 					var i = x
 					var j = y
 					var p = 21
+					var n = 0
 					while true:
+						n += 1
+						if n > 100: return
 						if get_cell(i,j) == 20 and p != 22:
 							j -= 1
 							p = 20
@@ -575,7 +581,10 @@ func _physics_process(delta):
 					var i = x
 					var j = y
 					var p = 22
+					var n = 0
 					while true:
+						n += 1
+						if n > 100: return
 						if get_cell(i,j) == 20 and p != 22:
 							j -= 1
 							p = 20
@@ -599,7 +608,10 @@ func _physics_process(delta):
 					var i = x
 					var j = y
 					var p = 23
+					var n = 0
 					while true:
+						n += 1
+						if n > 100: return
 						if get_cell(i,j) == 20 and p != 22:
 							j -= 1
 							p = 20
@@ -619,10 +631,16 @@ func _physics_process(delta):
 							break
 						else:
 							break
+							
 				if get_cell(x,y) == 26: # Detector
 					if get_cell(x,y-1) in [get_cell(x-1,y),get_cell(x+1,y)] and get_cell(x,y+1) == 0:
 						set_cell(x,y+1,get_cell(x,y-1))
 						set_cell(x,y-1,0)
+						
+				if get_cell(x,y) == 27: # Down facing detector
+					if get_cell(x,y+1) in [get_cell(x-1,y),get_cell(x+1,y)] and get_cell(x,y-1) == 0:
+						set_cell(x,y-1,get_cell(x,y+1))
+						set_cell(x,y+1,0)
 					
 				if get_cell(x,y) == 25:  # Magic Spikes
 					if get_cell(x,y-1) in [11,13]:
@@ -757,24 +775,24 @@ func _physics_process(delta):
 				if get_cell(x,y) == 22 and (get_cell(x,y+1) == 6 or get_cell(x,y+1) == 5) and rand_range(0,1) < 0.01 and $light.get_cell(x,y) > 5: # Onion seed growing
 					set_cell(x,y,21)
 					set_cell(x,y-1,21)
-				if get_cell(x,y) == 24: # Fire
-					for i in range(x-1,x+2):
-						for j in range(y-1,y+2):
-							if get_cell(i,j) == 1 or get_cell(i,j) == 9:
-								set_cell(x,y,0)
-					if rand_range(0,1) < 0.05:
-						set_cell(x,y,0)
-					else:
-						for i in range(x-2,x+2):
-							for j in range(y-2,y+2):
-								if get_cell(i,j) in flammable and rand_range(0,1) < 0.1:
-									set_cell(i,j,24)
-								if get_cell(i,j) == 25 and rand_range(0,1) < 0.02:
-									set_cell(i,j,26)
-								if get_cell(i,j) == 3 and rand_range(0,1) < 0.02:
-									set_cell(i,j,27)
-								if get_cell(i,j) == 13 and rand_range(0,1) < 0.02:
-									set_cell(i,j,12)
+#				if get_cell(x,y) == 24: # Fire
+#					for i in range(x-1,x+2):
+#						for j in range(y-1,y+2):
+#							if get_cell(i,j) == 1 or get_cell(i,j) == 9:
+#								set_cell(x,y,0)
+#					if rand_range(0,1) < 0.05:
+#						set_cell(x,y,0)
+#					else:
+#						for i in range(x-2,x+2):
+#							for j in range(y-2,y+2):
+#								if get_cell(i,j) in flammable and rand_range(0,1) < 0.1:
+#									set_cell(i,j,24)
+#								if get_cell(i,j) == 25 and rand_range(0,1) < 0.02:
+#									set_cell(i,j,26)
+#								if get_cell(i,j) == 3 and rand_range(0,1) < 0.02:
+#									set_cell(i,j,27)
+#								if get_cell(i,j) == 13 and rand_range(0,1) < 0.02:
+#									set_cell(i,j,12)
 				#$light.update_tile(x,y)
 
 #func tarbreak(x,y):

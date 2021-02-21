@@ -236,6 +236,13 @@ func _process(delta):
 		if block == 23: # left pipe > up pipe
 			amounts[select] -= 1
 			collect(20)
+			
+		if block == 26: # detector > down detector
+			amounts[select] -= 1
+			collect(27)
+		if block == 27: # down detector > detector
+			amounts[select] -= 1
+			collect(26)
 		#if block == 13:# or block == 10 or block == 12 or block == 15:
 			#amounts[select] -= 1
 #			#collect(12)
