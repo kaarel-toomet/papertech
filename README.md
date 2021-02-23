@@ -45,7 +45,7 @@ Made from a fork of tunnelivana. Has some factory game elements.
 - 4 ancient paper balls → 1 magic crystal
 - 1 magic crystal + 2 thick paper + 1 broken paper → 1 magic spike
 - 1 magic crystal + 2 pumps + 1 ancient paper ball → 1 pipe
-- 1 magic crystal + 1 pipe + 2 up pipe → 1 detector 
+- 1 magic crystal + 1 up pipe + 2 thick paper → 1 detector 
 
 
 
@@ -63,7 +63,7 @@ For each block of water every tick:
 3. If there is empty space in both horizontal directions, pick a random one.
 
 ### Pump
-Lifts water and ancient paperballs. If there is a block of water or ancient paperball below and empty space above, it moves the water up.
+Lifts water. If there is a block of water below and empty space above, it moves the water up. If there are multiple pumps on top of each other, they work all instantly.
 
 ### Extractor
 If there is a block of water above, it destroys it and has a chance to spawn a paperball or ancient paperball. The chances are 0.3 and 0.02, respectively. If there is something below, it doesnt work, except for thick paper, in which case it works as a water destroyer.

@@ -457,7 +457,7 @@ func _physics_process(delta):
 				
 				if get_cell(x,y) == 7: #Pump
 					var j = y-1
-					if get_cell(x,y+1) in [1,12]:
+					if get_cell(x,y+1) in [1]:
 						while true:
 							if get_cell(x,j) == 7:
 								j -= 1
